@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const useSignupAdmin = () => {
     const [admin_name, setAdmin_name] = useState("");
@@ -20,6 +21,15 @@ const useSignupAdmin = () => {
                 setAdmin_username("");
                 setAdmin_password("");
                 setSignupError({});
+                Swal.fire({
+                    title: 'Upload Complete',
+                    text: 'File has been uploaded successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    position: 'center',
+                });
             }
 
         } catch (error) {

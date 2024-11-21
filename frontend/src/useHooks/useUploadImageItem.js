@@ -55,7 +55,7 @@ function useUploadImageItem(id) {
                     confirmButtonText: 'OK',
                     timer: 2000,
                     timerProgressBar: true,
-                    position: 'top-end',
+                    position: 'center',
                 });
             }
 
