@@ -1,0 +1,51 @@
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+
+const useSigninAdmin = () => {
+    const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const [admin_username, checkAdmin_username] = useState("");
+    const [admin_password, checkAdmin_password] = useState("");
+    const [signinError, setSigninError] = useState({});
+
+    const signinAdmin = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.post("http://localhost:3001/api/signinAdmin", { 
+                admin_username, 
+                admin_password 
+            });
+
+            const data = response.data;
+
+            if (response.status === 200) {
+                login(data.token);
+                navigate('/dashboard');
+                checkAdmin_username("");
+                checkAdmin_password("");
+                setSigninError({});
+            }
+
+        } catch (error) {
+            if (error.response) {
+                if (error.response && error.response.data && error.response.data.errors) {
+                    setSigninError(error.response.data.errors);
+                } else {
+                    console.error("Server responded with an unexpected format:", error.response.data);
+                }
+            } else if (error.request) {
+                console.error("No response received:", error.request);
+            } else {
+                console.error("Error setting up request:", error.message);
+            }
+        }
+    }
+
+    return { checkAdmin_username, checkAdmin_password, signinAdmin, signinError };
+}
+
+export default useSigninAdmin;
