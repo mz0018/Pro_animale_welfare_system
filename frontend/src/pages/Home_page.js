@@ -37,12 +37,12 @@ const HomePage = () => {
         <img
           src={`${process.env.PUBLIC_URL}/vendor/assets/img/main.png`}
           alt="Animal Welfare"
-          className="main-image w-2/3 aspect-square rounded-xl shadow-lg transition-all transform duration-500"
+          className="main-image w-2/3 aspect-square rounded-full shadow-lg transition-all transform duration-500"
         />
       </div>
     
-      <div className="w-1/2 text-center pr-4">
-        <h1 className="title text-green-600 text-8xl font-bold tracking-wide mb-4">
+      <div className="w-1/2 text-start pr-4">
+        <h1 className="title text-green-600 text-9xl font-bold tracking-wide mb-4">
           P A W S
         </h1>
         <p className="subtitle text-gray-700 text-lg font-light">
