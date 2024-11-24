@@ -8,6 +8,7 @@ const ImageSchema = new mongoose.Schema({
     prod_price: {type: Number, required: true},
     prod_category: {type: String, required: true},
     prod_quantity: {type: Number, required: true},
+    date_created: {type: Date, default: Date.now}
 });
 
 const ImageModel = mongoose.model("items", ImageSchema);

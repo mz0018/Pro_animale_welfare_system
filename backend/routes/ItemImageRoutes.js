@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const Image = require('../models/ImageSchema');
@@ -71,6 +72,13 @@ router.post("/uploads/:id", upload.single("image"), async (request, response) =>
 router.get("/image/:id", async (request, response) => {
     try {
         const { id } = request.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return response.status(400).json({
+                errors: { vet_id: "Invalid vet_id" }
+            });
+        }
+
         const images = await Image.find({ vet_id: id });
 
         if (images.length === 0) {
@@ -79,7 +87,6 @@ router.get("/image/:id", async (request, response) => {
             });
         }
 
-        // Convert each image to base64 format and include product details
         const imageData = images.map((img) => ({
             image: `data:${img.contentType};base64,${img.image.toString('base64')}`,
             prod_name: img.prod_name,

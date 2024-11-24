@@ -16,6 +16,7 @@ const moreinfo = require('./routes/MoreInfoRoutes');
 const appointmentStatus = require('./routes/AppointmentStatusRoutes');
 const appointmentLogs = require('./routes/AppointmentHistoryRoutes');
 const profiling = require('./routes/PatientProfilingRoutes');
+const vetInModal =require('./routes/ViewVetInModalRoutes');
 const app = express();
 
 app.use(cors({
@@ -48,6 +49,7 @@ app.use('/api', moreinfo);
 app.use('/api', appointmentStatus);
 app.use('/api', appointmentLogs);
 app.use('/api', profiling);
+app.use('/api', vetInModal);
 const start_server = async () => {
 
     const PORT = process.env.PORT || 3001;
