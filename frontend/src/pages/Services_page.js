@@ -9,8 +9,12 @@ function ServicesPage() {
   const [vetDetails, setVetDetails] = useState(null);
   const [products, setProducts] = useState([]);
   const [image, setImage] = useState(null);
-  const [activeTab, setActiveTab] = useState('info');
+  const [activeCategory, setActiveCategory] = useState('foods');
 
+  const filteredProducts = products.filter(
+    (product) => product.prod_category === activeCategory
+  );
+  
   const {
     setSelectedVetId,
     setName,
@@ -53,7 +57,6 @@ function ServicesPage() {
         try {
             const response = await axios.get(`http://localhost:3001/api/image/${selectedVet._id}`);
             if (response.status === 200) {
-              // console.log("DATA: ", response.data);
               const sortedProducts = response.data.sort((a, b) => 
                 new Date(b.date_created) - new Date(a.date_created)
               );
@@ -183,124 +186,115 @@ function ServicesPage() {
       </form>
 
       {isModalOpen && vetDetails && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-    <div className="bg-white rounded-lg p-6 sm:p-8 lg:p-10 max-w-[90%] sm:max-w-[700px] shadow-lg transition-transform transform scale-100">
-      <div className="flex flex-col lg:flex-row items-center lg:items-start space-y-6 lg:space-y-0 lg:space-x-8">
-       
-        <div className="flex-shrink-0 text-center justify-center items-center  relative">
-          <img
-            src={image}
-            alt="Vet Profile"
-            className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-full object-cover border-4 border-green-500 transition-transform hover:scale-105 duration-300 ease-in-out"
-          />
-          <span className="absolute inset-0 rounded-full border-4 border-white shadow-md"></span>
-        </div>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="bg-white rounded-lg p-8 sm:p-12 lg:p-16 w-[90%] sm:w-[80%] max-w-none shadow-2xl transition-transform transform scale-100">
+          <div className="flex flex-col lg:flex-row lg:space-x-10">
+            <div className="flex flex-col items-center lg:items-start lg:w-1/3 space-y-6">
+              <div className="relative">
+                <img
+                  src={image}
+                  alt="Vet Profile"
+                  className="w-40 h-40 sm:w-52 sm:h-52 lg:w-64 lg:h-64 rounded-full object-cover border-4 border-green-500 transition-transform hover:scale-105 duration-300 ease-in-out"
+                />
+                <span className="absolute inset-0 rounded-full border-4 border-white shadow-md"></span>
+              </div>
 
-        <div className="flex-grow">   
-          <h2 className="text-center lg:text-left text-2xl sm:text-3xl font-bold text-green-600 mb-4 transition-colors hover:text-green-700">
-            {vetDetails.admin_name}
-          </h2>
-
-          <div className="border-b border-gray-200 mb-6">
-            <ul className="flex justify-center lg:justify-start space-x-4">
-              <li>
-                <button
-                  className={`py-2 px-4 text-sm sm:text-base font-semibold rounded-t-md ${
-                    activeTab === 'info'
-                      ? 'bg-green-100 text-green-600 border-b-2 border-green-600'
-                      : 'text-gray-500 hover:bg-gray-100'
-                  }`}
-                  onClick={() => setActiveTab('info')}
-                >
-                  Info
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`py-2 px-4 text-sm sm:text-base font-semibold rounded-t-md ${
-                    activeTab === 'products'
-                      ? 'bg-green-100 text-green-600 border-b-2 border-green-600'
-                      : 'text-gray-500 hover:bg-gray-100'
-                  }`}
-                  onClick={() => setActiveTab('products')}
-                >
-                  Products
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {activeTab === 'info' && (
-            <div className="space-y-4 text-gray-700">
-              <p>
-                <strong className="text-green-600">Clinic Address:</strong>{' '}
-                {vetDetails.admin_info?.clinic_address || 'N/A'}
-              </p>
-              <p>
-                <strong className="text-green-600">About me:</strong>{' '}
-                {vetDetails.admin_info?.about_me || 'No description available.'}
-              </p>
-              <p>
-                <strong className="text-green-600">Schedule:</strong>{' '}
-                {vetDetails.clinic_schedule?.opening_time
-                  ? formatTime(vetDetails.clinic_schedule.opening_time)
-                  : 'N/A'}{' '}
-                -{' '}
-                {vetDetails.clinic_schedule?.closing_time
-                  ? formatTime(vetDetails.clinic_schedule.closing_time)
-                  : 'N/A'}
-              </p>
+              <div className="text-center lg:text-left text-gray-700 space-y-4">
+                <h2 className="text-3xl uppercase sm:text-4xl font-bold text-green-600 transition-colors hover:text-green-700">
+                  {vetDetails.admin_name}
+                </h2>
+                <p>
+                  <strong className="text-green-600">Clinic Address:</strong>{' '}
+                  {vetDetails.admin_info?.clinic_address || 'N/A'}
+                </p>
+                <p>
+                  <strong className="text-green-600">About me:</strong>{' '}
+                  {vetDetails.admin_info?.about_me || 'No description available.'}
+                </p>
+                <p>
+                  <strong className="text-green-600">Schedule:</strong>{' '}
+                  {vetDetails.clinic_schedule?.opening_time
+                    ? formatTime(vetDetails.clinic_schedule.opening_time)
+                    : 'N/A'}{' '}
+                  -{' '}
+                  {vetDetails.clinic_schedule?.closing_time
+                    ? formatTime(vetDetails.clinic_schedule.closing_time)
+                    : 'N/A'}
+                </p>
+              </div>
             </div>
-          )}
 
-          {activeTab === 'products' && (
-            <div className="space-y-4 text-gray-700 h-48 overflow-y-auto px-2 sm:px-4">
-              {products && products.length > 0 ? (
-                products.map((product, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-4 bg-green-50 rounded-lg shadow-md border border-green-200 hover:shadow-lg transition-shadow duration-300 ease-in-out"
-                  >
-                    <div className="flex items-center space-x-4">
-                      <img
-                        src={product.image}
-                        alt={product.prod_name}
-                        className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-md border border-gray-300"
-                      />
-                      <div>
-                        <h4 className="font-semibold text-green-600">{product.prod_name}</h4>
-                        <p className="text-sm text-gray-500">{product.prod_category}</p>
+            <div className="lg:w-2/3">
+              <h3 className="text-2xl sm:text-3xl font-bold text-green-600 mb-6">
+                Products
+              </h3>
+
+              <div className="border-b border-gray-200 mb-6">
+                <ul className="flex justify-center lg:justify-start space-x-4">
+                  {['foods', 'accessories', 'others'].map((category) => (
+                    <li key={category}>
+                      <button
+                        className={`py-2 px-4 text-sm sm:text-base font-semibold rounded-t-md ${
+                          activeCategory === category
+                            ? 'bg-green-100 text-green-600 border-b-2 border-green-600'
+                            : 'text-gray-500 hover:bg-gray-100'
+                        }`}
+                        onClick={() => setActiveCategory(category)}
+                      >
+                        {category}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="space-y-4 text-gray-700 h-72 overflow-y-auto px-2 sm:px-4">
+                {filteredProducts && filteredProducts.length > 0 ? (
+                  filteredProducts.map((product, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-4 bg-green-50 rounded-lg shadow-md border border-green-200 hover:shadow-lg transition-shadow duration-300 ease-in-out"
+                    >
+                      <div className="flex items-center space-x-4">
+                        <img
+                          src={product.image}
+                          alt={product.prod_name}
+                          className="w-14 h-14 sm:w-20 sm:h-20 object-cover rounded-md border border-gray-300"
+                        />
+                        <div>
+                          <h4 className="font-semibold text-green-600">{product.prod_name}</h4>
+                          <p className="text-sm text-gray-500">{product.prod_category}</p>
+                        </div>
+                      </div>
+
+                      <div className="text-right">
+                        <span className="font-bold text-lg text-green-600">
+                          ${product.prod_price}
+                        </span>
+                        <p className="text-sm text-gray-500">Qty: {product.prod_quantity}</p>
                       </div>
                     </div>
-
-                    <div className="text-right">
-                      <span className="font-bold text-lg text-green-600">
-                        ${product.prod_price}
-                      </span>
-                      <p className="text-sm text-gray-500">Qty: {product.prod_quantity}</p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-center text-gray-500">No products available.</p>
-              )}
+                  ))
+                ) : (
+                  <p className="text-center text-gray-500">
+                    No products available in this category.
+                  </p>
+                )}
+              </div>
             </div>
-          )}
+          </div>
+
+          <div className="flex justify-end mt-8">
+            <button
+              className="bg-gray-200 text-gray-700 px-6 py-3 rounded-md hover:bg-gray-300 hover:shadow-lg transition-all duration-200"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
         </div>
-      </div>
-
-      <div className="flex justify-end mt-6">
-        <button
-          className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 hover:shadow transition-all duration-200"
-          onClick={closeModal}
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-
+        </div>
+      )}
     </div>
   );
 }

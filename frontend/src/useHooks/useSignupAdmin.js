@@ -23,7 +23,7 @@ const useSignupAdmin = () => {
                 setSignupError({});
                 Swal.fire({
                     title: 'Upload Complete',
-                    text: 'File has been uploaded successfully.',
+                    text: 'Registered successfully.',
                     icon: 'success',
                     confirmButtonText: 'OK',
                     timer: 2000,

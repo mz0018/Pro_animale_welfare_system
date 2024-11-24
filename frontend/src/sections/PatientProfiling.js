@@ -36,8 +36,8 @@ const PatientProfiling = ({ id, setIsSuccess, closeModal }) => {
 
             if (response.status === 200) {
                 Swal.fire({
-                    title: 'Upload Complete',
-                    text: 'Profile picture has been uploaded successfully.',
+                    title: 'Patient',
+                    text: 'The Patient has been added successfully',
                     icon: 'success',
                     confirmButtonText: 'OK',
                     timer: 2000,

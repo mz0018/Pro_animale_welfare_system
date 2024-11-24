@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function useAppointmentServices() {
     const [selectedVetId, setSelectedVetId] = useState('');
@@ -25,6 +26,15 @@ function useAppointmentServices() {
                 setReason("");
                 setStatus("");
                 setErrorService({});
+                Swal.fire({
+                    title: 'Request Sent',
+                    text: 'The appointment has been sent successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    position: 'center',
+                });
             }
 
         } catch (error) {
