@@ -4,7 +4,6 @@ node_modules/
 # Logs
 *.log
 
-.env
 
 # Build directories
 dist/
