@@ -7,11 +7,12 @@ const ListOfPatients = ({ id, isSuccess }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredPatients, setFilteredPatients] = useState({});
     const [openAccordionIndex, setOpenAccordionIndex] = useState(null);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
         const getList = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/api/patients/${id}`);
+                const response = await axios.get(`${apiUrl}/api/patients/${id}`);
                 if (response.status === 200) {
                     const patients = response.data.patients;
                     patients.sort((a, b) => new Date(b.date_registered) - new Date(a.date_registered));

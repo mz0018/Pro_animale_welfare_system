@@ -10,12 +10,13 @@ const useSigninAdmin = () => {
     const [admin_username, checkAdmin_username] = useState("");
     const [admin_password, checkAdmin_password] = useState("");
     const [signinError, setSigninError] = useState({});
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const signinAdmin = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:3001/api/signinAdmin", { 
+            const response = await axios.post(`${apiUrl}/api/signinAdmin`, { 
                 admin_username, 
                 admin_password 
             });

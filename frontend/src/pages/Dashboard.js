@@ -111,16 +111,55 @@ const AdminDashboard = () => {
                             <div className="md:w-1/3 pr-4 bg-gray-50 p-6 rounded-lg shadow-md">
                                 <h2 className="text-2xl font-bold text-green-600 mb-4">Add Product</h2>
                                 <form onSubmit={uploadImage} className="flex flex-col space-y-4">
-                                    {preview && (
-                                        <div className="w-64 h-auto rounded-md overflow-hidden mb-4">
-                                            <img src={preview} alt="Image Preview" className="w-full h-full object-cover" />
+                                <div className="flex flex-col items-center">
+                                    <div
+                                        className="relative w-48 h-48 rounded-full border-2 border-gray-300 flex items-center justify-center cursor-pointer bg-white hover:bg-gray-100 transition"
+                                        onClick={() => document.getElementById("fileInput").click()}
+                                    >
+                                        {preview ? (
+                                        <img
+                                            src={preview}
+                                            alt="Image Preview"
+                                            className="w-full h-full object-cover rounded-full"
+                                        />
+                                        ) : (
+                                        <div className="flex flex-col items-center text-gray-500">
+                                            <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-16 w-16"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M12 4v16m8-8H4"
+                                            />
+                                            </svg>
+                                            <p className="text-sm">Add Image</p>
                                         </div>
-                                    )}
-                                    <input type="file" onChange={(e) => {
+                                        )}
+                                    </div>
+
+                                    <input
+                                        type="file"
+                                        id="fileInput"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={(e) => {
                                         const file = e.target.files[0];
                                         setImage(file);
                                         handleImageChange(file);
-                                    }} className={`border ${imageError.no_image ? 'border-red-600' : 'border-gray-300'} rounded-md p-2 cursor-pointer hover:border-gray-500 transition`} />
+                                        }}
+                                    />
+
+                                    {imageError.no_image && (
+                                        <p className="text-red-600 text-sm mt-2">Please select an image.</p>
+                                    )}
+                                    </div>
+
                                     <input type="text" value={prod_name} placeholder="Product name" className={`border p-3 ${imageError.prod_name ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-600`} onChange={(e) => setProd_name(e.target.value)} />
                                     <input type="number" value={prod_price} placeholder="Product price" className={`border p-3 ${imageError.prod_price || imageError.prod_price_value ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-600`} onChange={(e) => setProd_price(e.target.value)} />
                                     <select value={prod_category} className={`border p-3 ${imageError.prod_category ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-600`} onChange={(e) => setProd_category(e.target.value)}>

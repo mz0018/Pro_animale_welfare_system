@@ -7,11 +7,12 @@ const AppointmentList = ({ id }) => {
     const [appointments, setAppointments] = useState([]);
     const [error, setError] = useState(null);
     const { setApprove, setReject, setAppointment_id } = useApproveAppointment();
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/api/appointments?id=${id}`);
+                const response = await axios.get(`${apiUrl}/api/appointments?id=${id}`);
                
                 const sortedAppointments = response.data.appointments.sort((a, b) => 
                     new Date(b.date_created) - new Date(a.date_created)

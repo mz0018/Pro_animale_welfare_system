@@ -10,6 +10,7 @@ function ServicesPage() {
   const [products, setProducts] = useState([]);
   const [image, setImage] = useState(null);
   const [activeCategory, setActiveCategory] = useState('foods');
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const filteredProducts = products.filter(
     (product) => product.prod_category === activeCategory
@@ -38,7 +39,7 @@ function ServicesPage() {
     const viewProfile = async () => {
       if (!selectedVet) return;
       try {
-        const response = await axios.get(`http://localhost:3001/api/fetchPicture/${selectedVet._id}`);
+        const response = await axios.get(`${apiUrl}/api/fetchPicture/${selectedVet._id}`);
         if (response.status === 200) {
           if (response.data && response.data.profile_pic_url) {
             setImage(response.data.profile_pic_url);
@@ -55,7 +56,7 @@ function ServicesPage() {
     const getProducts = async () => {
         if (!selectedVet) return;
         try {
-            const response = await axios.get(`http://localhost:3001/api/image/${selectedVet._id}`);
+            const response = await axios.get(`${apiUrl}/api/image/${selectedVet._id}`);
             if (response.status === 200) {
               const sortedProducts = response.data.sort((a, b) => 
                 new Date(b.date_created) - new Date(a.date_created)
@@ -78,7 +79,7 @@ function ServicesPage() {
   const openModal = async () => {
     if (selectedVet) {
       try {
-        const response = await axios.get(`http://localhost:3001/api/info/${selectedVet._id}`);
+        const response = await axios.get(`${apiUrl}/api/info/${selectedVet._id}`);
         setVetDetails(response.data.admin);
         setIsModalOpen(true);
       } catch (error) {

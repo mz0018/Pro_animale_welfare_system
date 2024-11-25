@@ -9,12 +9,13 @@ const useSignupAdmin = () => {
     const [contact, setContact] = useState("");
     const [license_certificate, setLicense_certificate] = useState("");
     const [signupError, setSignupError] = useState({});
+    const apiUrl = process.env.REACT_APP_API_URL;
     
     const signupAdmin = async (e) => {
         e.preventDefault();
         
         try {
-            const response = await axios.post("http://localhost:3001/api/signupAdmin", { admin_name, admin_username, admin_password, contact, license_certificate });
+            const response = await axios.post(`${apiUrl}/api/signupAdmin`, { admin_name, admin_username, admin_password, contact, license_certificate });
             // console.log(response.data);
             
             if (response.status === 200) {

@@ -7,11 +7,12 @@ function useApproveAppointment() {
     const [appointment_id, setAppointment_id] = useState();
     const [approve, setApprove] = useState('');
     const [reject, setReject] = useState('');
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const approvedAppointment = async () => {
         setApprove('');
         try {
-            const response = await axios.patch(`http://localhost:3001/api/approveStatus/${appointment_id}`);
+            const response = await axios.patch(`${apiUrl}/api/approveStatus/${appointment_id}`);
             if (response.status === 200) {
                 Swal.fire({
                     title: 'Approved',
@@ -34,7 +35,7 @@ function useApproveAppointment() {
     const rejectAppointment = async () => {
         setReject('');
         try {
-            const response = await axios.patch(`http://localhost:3001/api/rejectStatus/${appointment_id}`);
+            const response = await axios.patch(`${apiUrl}/api/rejectStatus/${appointment_id}`);
             if (response.status === 200) {
                 Swal.fire({
                     title: 'Rejected',

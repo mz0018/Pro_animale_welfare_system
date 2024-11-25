@@ -11,6 +11,7 @@ function useUploadImageItem(id) {
     const [imageError, setImageError] = useState({});
     const [preview, setPreview] = useState(null);
     const [success, setSuccess] = useState(null);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const handleImageChange = (file) => {   
         try {
@@ -39,7 +40,7 @@ function useUploadImageItem(id) {
         formData.append("prod_quantity", prod_quantity);
 
         try {
-            const response = await axios.post(`http://localhost:3001/api/uploads/${id}`, formData, {
+            const response = await axios.post(`${apiUrl}/api/uploads/${id}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

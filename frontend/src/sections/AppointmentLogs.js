@@ -3,11 +3,12 @@ import axios from 'axios';
 
 const AppointmentLogs = ({ id }) => {
     const [appointments, setAppointments] = useState([]);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
         const getAppointments = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/api/history/${id}`);
+                const response = await axios.get(`${apiUrl}/api/history/${id}`);
                 if (response.status === 200) {
                     const combinedAppointments = [
                         ...response.data.approvedAppointments.map(app => ({ ...app, status: 'Approved' })),

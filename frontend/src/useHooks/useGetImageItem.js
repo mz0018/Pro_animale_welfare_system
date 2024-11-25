@@ -4,10 +4,11 @@ import axios from 'axios';
 function useGetImageItem(id, success) {
     const [imgSrc, setImgSrc] = useState([]);
     const [getImgError, setGetImgErr] = useState({});
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const getImage = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/image/${id}`);
+            const response = await axios.get(`${apiUrl}/api/image/${id}`);
             setImgSrc(response.data);
         } catch (error) {
             if (error.response) {

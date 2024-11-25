@@ -9,6 +9,7 @@ function $Auth() {
     const [tryEmail, setTryEmail] = useState("");
     const [tryPassword, setTryPassword] = useState("");
     const navigate = useNavigate();
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const { login } = useContext(AuthContext);
 
@@ -16,7 +17,7 @@ function $Auth() {
         e.preventDefault();
 
         try {
-          const response = await axios.post("http://localhost:3001/api/insert", { logEmail, logPassword });
+          const response = await axios.post(`${apiUrl}/api/insert`, { logEmail, logPassword });
         // debugger;
         } catch (error) {
           console.error("Error: ", error);
@@ -28,7 +29,7 @@ function $Auth() {
         e.preventDefault();
         
         try {
-          const res = await axios.post("http://localhost:3001/api/try", { tryEmail, tryPassword });
+          const res = await axios.post(`${apiUrl}/api/try`, { tryEmail, tryPassword });
           const data = res.data;
           
           login(data.token);

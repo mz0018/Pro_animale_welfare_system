@@ -16,6 +16,7 @@ function MoreInfo({ id }) {
       closing_time: '',
     },
   });
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const [getError, setGetError] = useState(null);
 
@@ -51,7 +52,7 @@ function MoreInfo({ id }) {
   useEffect(() => {
     const getInfo = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/info/${id}`);
+        const response = await axios.get(`${apiUrl}/api/info/${id}`);
         if (response.status === 200) {
           setInfo(response.data.admin);
         }
@@ -70,7 +71,7 @@ function MoreInfo({ id }) {
     e.preventDefault();
 
     try {
-      const response = await axios.patch(`http://localhost:3001/api/info/${id}`, info);
+      const response = await axios.patch(`${apiUrl}/api/info/${id}`, info);
 
       if (response.status === 200) {
         console.log('Data updated successfully');

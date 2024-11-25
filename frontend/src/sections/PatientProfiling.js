@@ -15,12 +15,13 @@ const PatientProfiling = ({ id, setIsSuccess, closeModal }) => {
     const [vitalSigns, setVitalSigns] = useState('');
     const [healthTracking, setHealthTracking] = useState('');
     const [errors, setErrors] = useState({});
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         
         try {
-            const response = await axios.post(`http://localhost:3001/api/savepatient/${id}`, {
+            const response = await axios.post(`${apiUrl}/api/savepatient/${id}`, {
                 petOwner,
                 petName,
                 species,

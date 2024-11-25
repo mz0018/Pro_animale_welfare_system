@@ -4,11 +4,12 @@ import axios from 'axios';
 function useIncomingRequest() {
 
     const [listOfRequest, setListOfRequest] = useState([]);
-
+    const apiUrl = process.env.REACT_APP_API_URL;
+    
     useEffect(() => {
         const getAllRequest = async () => {
             try {
-                const response = await axios.get("http://localhost:3001/api/request");
+                const response = await axios.get(`${apiUrl}/api/request`);
                 setListOfRequest(response.data.incomingRequest);
             } catch (error) {
                 console.error("Error: ", error);

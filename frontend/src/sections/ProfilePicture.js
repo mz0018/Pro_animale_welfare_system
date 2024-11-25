@@ -12,11 +12,12 @@ function ProfilePicture({ id }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const fileInputRef = React.useRef(null);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchProfilePicture = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/fetchPicture/${id}`);
+        const response = await axios.get(`${apiUrl}/api/fetchPicture/${id}`);
         if (response.data && response.data.profile_pic_url) {
           setPreview(response.data.profile_pic_url);
         }

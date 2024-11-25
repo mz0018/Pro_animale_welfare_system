@@ -11,11 +11,12 @@ function useAppointmentServices() {
     const [reason, setReason] = useState('');
     const [status, setStatus] = useState('pending');
     const [errorService, setErrorService] = useState({});
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const sendAppointment = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:3001/api/sendAppointment", { selectedVetId, name, contact, date, time, reason, status });
+            const response = await axios.post(`${apiUrl}/api/sendAppointment`, { selectedVetId, name, contact, date, time, reason, status });
           
             if (response.status === 200) {
                 setSelectedVetId("");

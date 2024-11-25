@@ -6,9 +6,11 @@ import { AuthContext } from '../context/AuthContext'
 const useLogout = () => {
     const { logout } = useContext(AuthContext);
     const navigate = useNavigate();
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     const logoutUser = async () => {
         try {
-            await axios.post("http://localhost:3001/api/logout");
+            await axios.post(`${apiUrl}/api/logout`);
 
             logout();
             navigate('/');
