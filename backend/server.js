@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path'); // To handle file paths
+const path = require('path');
 const connect_to_mongo = require('./config/connection');
 const checkApi = require('./routes/apiRoutes');
 const signupAdmin = require('./routes/SignupAdminRoute');
@@ -56,11 +56,9 @@ app.use('/api', appointmentLogs);
 app.use('/api', profiling);
 app.use('/api', vetInModal);
 
-// Serve static files from the React app
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'frontend/build')));
 
-    // All other requests will return the React app
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
     });
