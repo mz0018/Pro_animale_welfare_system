@@ -9,7 +9,6 @@ import useGetImageItem from '../useHooks/useGetImageItem';
 import ProfilePicture from '../sections/ProfilePicture';
 import MoreInfo from '../sections/MoreInfo';
 import Drawer from '../sections/Drawer';
-import Footer from '../sections/Footer';
 import AppointmentLogs from '../sections/AppointmentLogs';
 import PatientProfiling from '../sections/PatientProfiling';
 import ListOfPatients from '../sections/ListOfPatients';
@@ -178,7 +177,7 @@ const AdminDashboard = () => {
                                 </form>
                             </div>
 
-                            <div className="md:w-2/3 pl-4 overflow-y-auto h-[calc(100vh-200px)] bg-gray-50 p-6 rounded-lg shadow-md">
+                            <div className="md:w-2/3 pl-4 overflow-y-auto h-100vh bg-gray-50 p-6 rounded-lg shadow-md">
                                 <h2 className="text-2xl font-bold text-green-600 mb-4">Products</h2>
                                 <input type="text" placeholder="Search products..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="border p-3 mb-4 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-green-600" />
                                 <div className="mb-4 flex gap-2">
@@ -243,8 +242,6 @@ const AdminDashboard = () => {
                     )}
                 </div>
             </div>
-
-            <Footer />
         </div>
     );
 };

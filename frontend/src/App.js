@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 import $Auth from "./pages/$auth";
 import $Db from "./pages/$db";
+import Footer from "./sections/Footer";
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
           )}
         </AuthContext.Consumer>
       </Router>
+      <Footer />
     </AuthProvider>
   );
 }

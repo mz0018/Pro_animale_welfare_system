@@ -42,7 +42,7 @@ const HomePage = () => {
       </div>
     
       <div className="w-1/2 text-start pr-4">
-        <h1 className="title text-green-600 text-9xl font-bold tracking-wide mb-4">
+        <h1 className="title truncate text-green-600 text-9xl font-bold tracking-wide mb-4">
           P A W S
         </h1>
         <p className="subtitle text-gray-700 text-lg font-light">

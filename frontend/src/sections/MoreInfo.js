@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { FaClinicMedical, FaUserMd, FaPhoneAlt, FaClock, FaInfoCircle } from 'react-icons/fa';
+import { MdOutlinePassword } from 'react-icons/md';
 import axios from 'axios';
 
 function MoreInfo({ id }) {
   const [info, setInfo] = useState({
     admin_name: '',
     admin_user: '',
-    admin_pwd: '',
+
     contact_number: '',
     admin_info: {
       clinic_address: '',
@@ -83,101 +85,116 @@ function MoreInfo({ id }) {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      
+    <div className="container mx-auto p-6 bg-white shadow-lg rounded-md">
       {getError && <p className="text-red-500">{getError}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:space-x-4">
-          <label className="text-sm sm:w-1/4">Admin Name:</label>
-          <input
-            type="text"
-            name="admin_name"
-            value={info.admin_name || ''}
-            onChange={handleChange}
-            className="mt-2 sm:mt-0 p-2 border rounded-md"
-          />
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="p-4 border rounded-md shadow-sm bg-gray-50">
+          <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+            <FaUserMd className="mr-2 text-green-500" /> Admin Details
+          </h3>
+
+          <div className="space-y-4">
+            <div className="flex items-center">
+              <label className="w-1/4 text-gray-600">Admin Name:</label>
+              <input
+                type="text"
+                name="admin_name"
+                value={info.admin_name || ''}
+                onChange={handleChange}
+                className="w-3/4 p-2 border rounded-md"
+              />
+            </div>
+
+            <div className="flex items-center">
+              <label className="w-1/4 text-gray-600">Admin User:</label>
+              <input
+                type="text"
+                name="admin_user"
+                value={info.admin_user || ''}
+                onChange={handleChange}
+                className="w-3/4 p-2 border rounded-md"
+              />
+            </div>
+
+
+            <div className="flex items-center">
+              <label className="w-1/4 text-gray-600">Contact Number:</label>
+              <input
+                type="text"
+                name="contact_number"
+                value={info.contact_number || ''}
+                onChange={handleChange}
+                className="w-3/4 p-2 border rounded-md"
+              />
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:space-x-4">
-          <label className="text-sm sm:w-1/4">Admin User:</label>
-          <input
-            type="text"
-            name="admin_user"
-            value={info.admin_user || ''}
-            onChange={handleChange}
-            className="mt-2 sm:mt-0 p-2 border rounded-md"
-          />
+        <div className="p-4 border rounded-md shadow-sm bg-gray-50">
+          <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+            <FaInfoCircle className="mr-2 text-blue-500" /> Clinic Information
+          </h3>
+
+          <div className="space-y-4">
+            <div className="flex items-center">
+              <label className="w-1/4 text-gray-600">Clinic Address:</label>
+              <input
+                type="text"
+                name="admin_info.clinic_address"
+                value={info.admin_info?.clinic_address || ''}
+                onChange={handleChange}
+                className="w-3/4 p-2 border rounded-md"
+              />
+            </div>
+
+            <div className="flex items-center">
+              <label className="w-1/4 text-gray-600">About Me:</label>
+              <textarea
+                name="admin_info.about_me"
+                value={info.admin_info?.about_me || ''}
+                onChange={handleChange}
+                className="w-3/4 p-2 border rounded-md"
+              />
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:space-x-4">
-          <label className="text-sm sm:w-1/4">Password:</label>
-          <input
-            type="password"
-            name="admin_pwd"
-            value={info.admin_pwd || ''}
-            onChange={handleChange}
-            className="mt-2 sm:mt-0 p-2 border rounded-md"
-          />
+        <div className="p-4 border rounded-md shadow-sm bg-gray-50">
+          <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+            <FaClock className="mr-2 text-purple-500" /> Clinic Schedule
+          </h3>
+
+          <div className="space-y-4">
+            <div className="flex items-center">
+              <label className="w-1/4 text-gray-600">Opening Time:</label>
+              <input
+                type="time"
+                name="clinic_schedule.opening_time"
+                value={info.clinic_schedule?.opening_time || ''}
+                onChange={handleChange}
+                className="w-3/4 p-2 border rounded-md"
+              />
+            </div>
+
+            <div className="flex items-center">
+              <label className="w-1/4 text-gray-600">Closing Time:</label>
+              <input
+                type="time"
+                name="clinic_schedule.closing_time"
+                value={info.clinic_schedule?.closing_time || ''}
+                onChange={handleChange}
+                className="w-3/4 p-2 border rounded-md"
+              />
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:space-x-4">
-          <label className="text-sm sm:w-1/4">Contact Number:</label>
-          <input
-            type="text"
-            name="contact_number"
-            value={info.contact_number || ''}
-            onChange={handleChange}
-            className="mt-2 sm:mt-0 p-2 border rounded-md"
-          />
-        </div>
-
-        {/* Admin Info Section */}
-        <div className="flex flex-col sm:flex-row sm:space-x-4">
-          <label className="text-sm sm:w-1/4">Clinic Address:</label>
-          <input
-            type="text"
-            name="admin_info.clinic_address"
-            value={info.admin_info?.clinic_address || ''}
-            onChange={handleChange}
-            className="mt-2 sm:mt-0 p-2 border rounded-md"
-          />
-        </div>
-
-        <div className="flex flex-col sm:flex-row sm:space-x-4">
-          <label className="text-sm sm:w-1/4">About Me:</label>
-          <textarea
-            name="admin_info.about_me"
-            value={info.admin_info?.about_me || ''}
-            onChange={handleChange}
-            className="mt-2 sm:mt-0 p-2 border rounded-md"
-          />
-        </div>
-
-        {/* Clinic Schedule - Opening and Closing Time Fields */}
-        <div className="flex flex-col sm:flex-row sm:space-x-4">
-          <label className="text-sm sm:w-1/4">Opening Time:</label>
-          <input
-            type="time"
-            name="clinic_schedule.opening_time"
-            value={info.clinic_schedule?.opening_time || ''}
-            onChange={handleChange}
-            className="mt-2 sm:mt-0 p-2 border rounded-md"
-          />
-        </div>
-
-        <div className="flex flex-col sm:flex-row sm:space-x-4">
-          <label className="text-sm sm:w-1/4">Closing Time:</label>
-          <input
-            type="time"
-            name="clinic_schedule.closing_time"
-            value={info.clinic_schedule?.closing_time || ''}
-            onChange={handleChange}
-            className="mt-2 sm:mt-0 p-2 border rounded-md"
-          />
-        </div>
-
-        <button type="submit" className="mt-4 bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 w-full sm:w-auto">
-          Update
+        <button
+          type="submit"
+          className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white p-3 rounded-md mt-4 shadow-lg"
+        >
+          Update Information
         </button>
       </form>
     </div>
