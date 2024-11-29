@@ -51,25 +51,21 @@ const AppointmentList = ({ id }) => {
                     {appointments.length > 0 ? (
                         appointments.map((appointment, index) => (
                             <tr key={index} className={`text-gray-700 ${index % 2 === 0 ? 'bg-green-50' : 'bg-white'} hover:bg-green-100`}>
-                                <td className="border border-green-200 px-6 py-3 text-base">
+                                <td className="truncate border border-green-200 px-6 py-3 text-base">
                                     {appointment.name}
                                 </td>
-                                <td className="border border-green-200 px-6 py-3 text-base">{appointment.reason}</td>
-                                <td className="border border-green-200 px-6 py-3 text-base">
+                                <td className="truncate border border-green-200 px-6 py-3 text-base">{appointment.reason}</td>
+                                <td className="truncate border border-green-200 px-6 py-3 text-base">
                                     {new Date(appointment.date).toLocaleDateString('en-US', {
                                         year: 'numeric',
                                         month: 'long',
                                         day: 'numeric'
                                     })}
                                 </td>
-                                <td className="border border-green-200 px-6 py-3 text-base">
-                                    {new Date(`1970-01-01T${appointment.time}`).toLocaleTimeString('en-US', {
-                                        hour: 'numeric',
-                                        minute: 'numeric',
-                                        hour12: true
-                                    })}
+                                <td className="truncate border border-green-200 px-6 py-3 text-base">
+                                    {appointment.time}
                                 </td>
-                                <td className="border border-green-200 px-6 py-3 text-base flex flex-col sm:flex-row gap-2 justify-center items-center">
+                                <td className="truncate border border-green-200 px-6 py-3 text-base flex flex-col sm:flex-row gap-2 justify-center items-center">
                                     <button
                                         onClick={() => {
                                             setApprove('1');

@@ -51,11 +51,7 @@ const AppointmentLogs = ({ id }) => {
                                                 year: 'numeric',
                                                 month: 'long',
                                                 day: 'numeric'
-                                            })} at {new Date(`1970-01-01T${appointment.time}`).toLocaleTimeString('en-US', {
-                                                hour: 'numeric',
-                                                minute: 'numeric',
-                                                hour12: true
-                                            })}
+                                            })} at {appointment.time}
                                         </small>
                                     </td>
                                     <td className={`border border-green-300 px-4 md:px-6 py-4 font-semibold ${appointment.status === 'Approved' ? 'text-green-600' : 'text-red-600'}`}>

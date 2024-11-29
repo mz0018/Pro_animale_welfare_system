@@ -7,7 +7,7 @@ function useAppointmentServices() {
     const [name, setName] = useState('');
     const [contact, setContact] = useState('');
     const [date, setDate] = useState(null);
-    const [time, setTime] = useState(null);
+    const [time, setTime] = useState('');
     const [reason, setReason] = useState('');
     const [status, setStatus] = useState('pending');
     const [errorService, setErrorService] = useState({});
@@ -19,13 +19,13 @@ function useAppointmentServices() {
             const response = await axios.post(`${apiUrl}/api/sendAppointment`, { selectedVetId, name, contact, date, time, reason, status });
           
             if (response.status === 200) {
-                setSelectedVetId("");
-                setName("");
-                setContact("");
+                setSelectedVetId('');
+                setName('');
+                setContact('');
                 setDate(null);
-                setTime(null);
-                setReason("");
-                setStatus("");
+                setTime('');
+                setReason('');
+                setStatus('');
                 setErrorService({});
                 Swal.fire({
                     title: 'Request Sent',

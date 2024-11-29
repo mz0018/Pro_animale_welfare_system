@@ -44,8 +44,15 @@ router.get("/fetchPicture/:id", async (request, response) => {
             });
         }
 
+        const opening = admin.clinic_schedule.opening_time;
+        const closing = admin.clinic_schedule.closing_time;
+
         const base64Pic = admin.admin_info.profile_picture.toString('base64');
-        return response.status(200).json({ profile_pic_url: `data:image/jpeg;base64,${base64Pic}` });
+        return response.status(200).json({ 
+            profile_pic_url: `data:image/jpeg;base64,${base64Pic}`,
+            opening,
+            closing
+        });
     } catch (error) {
         console.error("Error occurred: ", error);
         return response.status(500).json({ message: "Server error", error });

@@ -13,6 +13,10 @@ function ServicesPage() {
   const [image, setImage] = useState(null);
   const [activeCategory, setActiveCategory] = useState('foods');
   const apiUrl = process.env.REACT_APP_API_URL;
+  const [opening, setOpening] = useState(null);
+  const [closing, setClosing] = useState(null);
+  const [timeSlots, setTimeSlots] = useState([]);
+  const [prodErr, setProdErr] = useState({});
 
   const filteredProducts = products.filter(
     (product) => product.prod_category === activeCategory
@@ -37,47 +41,6 @@ function ServicesPage() {
     setSelectedVetId(vetId);
   };
 
-  useEffect(() => {
-    const viewProfile = async () => {
-      if (!selectedVet) return;
-      try {
-        const response = await axios.get(`${apiUrl}/api/fetchPicture/${selectedVet._id}`);
-        if (response.status === 200) {
-          if (response.data && response.data.profile_pic_url) {
-            setImage(response.data.profile_pic_url);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching profile picture', error);
-      }
-    };
-    viewProfile();
-  }, [selectedVet]);
-  
-  useEffect(() => {
-    const getProducts = async () => {
-        if (!selectedVet) return;
-        try {
-            const response = await axios.get(`${apiUrl}/api/image/${selectedVet._id}`);
-            if (response.status === 200) {
-              const sortedProducts = response.data.sort((a, b) => 
-                new Date(b.date_created) - new Date(a.date_created)
-              );
-              setProducts(sortedProducts);
-            }
-          } catch (error) {
-            if (error.response) {
-                console.error("Backend returned an error:", error.response.data);
-            } else {
-                console.error("Error in Axios request:", error.message);
-            }    
-        }
-    };
-
-    getProducts();
-}, [selectedVet]);
-
-
   const openModal = async () => {
     if (selectedVet) {
       try {
@@ -100,6 +63,97 @@ function ServicesPage() {
     const formattedTime = new Date(0, 0, 0, hours, minutes);
     return formattedTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
   };
+
+  const generateTimeSlot = async (opening, closing, vetId) => {
+    if (!opening || !closing) {
+      console.error('Invalid opening or closing time:', opening, closing);
+      return;
+    }
+  
+    const slots = [];
+    const [openingHours, openingMinutes] = opening.split(':').map(Number);
+    const [closingHours, closingMinutes] = closing.split(':').map(Number);
+  
+    const currentTime = new Date();
+    currentTime.setHours(openingHours, openingMinutes, 0, 0);
+  
+    const endTime = new Date();
+    endTime.setHours(closingHours, closingMinutes, 0, 0);
+  
+    let approvedSlots = [];
+    try {
+      const response = await axios.get(`${apiUrl}/api/approvedAppointments/${selectedVet._id}`);
+      if (response.status === 200) {
+        approvedSlots = response.data;
+      }
+    } catch (error) {
+      console.error('Error fetching approved appointments', error);
+    }
+  
+    while (currentTime < endTime) {
+      const nextTime = new Date(currentTime);
+      nextTime.setHours(currentTime.getHours() + 1);
+  
+      const formattedStart = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+      const formattedEnd = nextTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+  
+      const slot = `${formattedStart} - ${formattedEnd}`;
+      slots.push({ time: slot, taken: approvedSlots.includes(slot) });
+  
+      currentTime.setHours(currentTime.getHours() + 1);
+    }
+  
+    setTimeSlots(slots);
+  };
+  
+  useEffect(() => {
+    const viewProfile = async () => {
+      if (!selectedVet) return;
+      try {
+        const response = await axios.get(`${apiUrl}/api/fetchPicture/${selectedVet._id}`);
+        if (response.status === 200) {
+          if (response.data && response.data.profile_pic_url) {
+            setImage(response.data.profile_pic_url);
+            setOpening(response.data.opening);
+            setClosing(response.data.closing);
+  
+            await generateTimeSlot(response.data.opening, response.data.closing, selectedVet._id);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching profile picture', error);
+      }
+    };
+    viewProfile();
+  }, [selectedVet]);
+  
+  useEffect(() => {
+    const getProducts = async () => {
+        if (!selectedVet) return;
+        try {
+            const response = await axios.get(`${apiUrl}/api/image/${selectedVet._id}`);
+            if (response.status === 200) {
+              const sortedProducts = response.data.sort((a, b) => 
+                new Date(b.date_created) - new Date(a.date_created)
+              );
+              setProducts(sortedProducts);
+            }
+          } catch (error) {
+            if (error.response && error.response.data && error.response.data.errors) {
+              setProdErr(error.response.data.errors);
+            }
+          }
+    };
+
+    getProducts();
+  }, [selectedVet]);
+
+  useEffect(() => {
+    if (opening && closing) {
+      generateTimeSlot(opening, closing);
+    }
+  }, [opening, closing]);
+
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center p-6">
@@ -162,17 +216,40 @@ function ServicesPage() {
             className={`w-1/2 border p-3 ${errorService.date ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
             onChange={(e) => setDate(e.target.value)}
           />
-          <input
-            type="time"
-            className={`w-1/2 border p-3 ${errorService.time ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
-            onChange={(e) => setTime(e.target.value)}
-          />
+ 
+        <select
+          onChange={(e) => setTime(e.target.value)}
+          className={`border p-3 flex-1 ${errorService.time ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
+        >
+          <option hidden>Please select a time</option>
+          {timeSlots.length > 0 ? (
+            timeSlots.map((slot, index) => (
+              <option key={index} value={slot.time} disabled={slot.taken}>
+                {slot.taken ? `❌ ${slot.time} (Taken)` : slot.time}
+              </option>
+            ))
+          ) : (
+            <option>No available slots</option>
+          )}
+        </select>
+
+
         </div>
-        <textarea
-          placeholder="Reason for Appointment"
+        <select
           className={`border p-3 ${errorService.reason ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
           onChange={(e) => setReason(e.target.value)}
-        ></textarea>
+        >
+          <option value="">Select a reason</option>
+          <option value="Vaccination">Vaccination</option>
+          <option value="Checkup">Checkup</option>
+          <option value="Spaying/Neutering">Spaying/Neutering</option>
+          <option value="Deworming">Deworming</option>
+          <option value="Surgery">Surgery</option>
+          <option value="Grooming">Grooming</option>
+          <option value="Emergency">Emergency</option>
+          <option value="Other">Other</option>
+        </select>
+
         <span className="text-sm text-red-600">
           {errorService.name ||
             errorService.contact ||
@@ -196,7 +273,7 @@ function ServicesPage() {
               <div className="flex flex-col items-center lg:items-start lg:w-1/3 space-y-6">
                 <div className="relative">
                   <img
-                    src={image}
+                    src={image || `${process.env.PUBLIC_URL}/vendor/assets/img/default_img.jpg`}
                     alt="Vet Profile"
                     className="w-40 h-40 sm:w-52 sm:h-52 lg:w-64 lg:h-64 rounded-full object-cover border-4 border-green-500 border-solid transition-transform hover:scale-105 duration-300 ease-in-out"
                   />

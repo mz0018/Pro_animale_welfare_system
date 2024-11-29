@@ -83,7 +83,7 @@ router.get("/image/:id", async (request, response) => {
 
         if (images.length === 0) {
             return response.status(400).json({
-                errors: { image: "Images not found" }
+                errors: { image: "No Product image is uploaded yet." }
             });
         }
 
@@ -97,7 +97,6 @@ router.get("/image/:id", async (request, response) => {
 
         return response.status(200).json(imageData);
     } catch (error) {
-        console.error("Backend Error ", error);
         return response.status(500).json({ message: "Server error ", error });
     }
 });
