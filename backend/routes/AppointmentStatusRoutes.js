@@ -85,18 +85,4 @@ router.patch("/rejectStatus/:id", async (request, response) => {
     }
 });
 
-router.get("/approvedAppointments/:id", async (request, response) => {
-    try {
-        const { id } = request.params;
-        const approvedAppointments = await Appointment.find({
-            selectedVetId: id,
-            status: "approved",
-        }).select("time -_id");
-
-        response.status(200).json(approvedAppointments.map((appt) => appt.time));
-    } catch (error) {
-        return response.status(500).json({ message: "Server Error", error });
-    }
-});
-
 module.exports = router;

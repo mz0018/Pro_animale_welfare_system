@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Admin = require('../models/AdminSchema');
+const Appointment = require('../models/AppointmentSchema');
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -56,6 +57,65 @@ router.get("/fetchPicture/:id", async (request, response) => {
     } catch (error) {
         console.error("Error occurred: ", error);
         return response.status(500).json({ message: "Server error", error });
+    }
+});
+
+router.get("/clinicSched/:id", async (request, response) => {
+    try {
+        const { id } = request.params;
+        const admin = await Admin.findById(id);
+
+        if (!admin) {
+            return response.status(404).json({ message: "Admin not found." });
+        }
+
+        const openingTime = admin.clinic_schedule.opening_time;
+        const closingTime = admin.clinic_schedule.closing_time;
+
+        const opening = new Date(`1970-01-01T${openingTime}:00`);
+        const closing = new Date(`1970-01-01T${closingTime}:00`);
+
+        if (closing <= opening) {
+            return response.status(400).json({ message: "Closing time must be after opening time." });
+        }
+
+        const appointments = await Appointment.find({
+            selectedVetId: id,
+            date: { $gte: new Date().toISOString().split("T")[0] }, 
+            status: "approved",
+        });
+
+        const formatTime = (date) => {
+            const hours = date.getHours();
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            const period = hours >= 12 ? 'PM' : 'AM';
+            const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+            return `${formattedHours}:${minutes} ${period}`;
+        };
+
+        const takenSlots = appointments.map((appt) => formatTime(new Date(`1970-01-01T${appt.time}:00`)));
+
+        const intervals = [];
+        let current = new Date(opening);
+
+        while (current < closing) {
+            const next = new Date(current);
+            next.setHours(current.getHours() + 1);
+
+            if (next > closing) break;
+
+            const timeSlot = `${formatTime(current)} - ${formatTime(next)}`;
+            const isTaken = takenSlots.includes(formatTime(current));
+
+            intervals.push({ timeSlot, isTaken });
+
+            current = next;
+        }
+
+        return response.status(200).json(intervals);
+    } catch (error) {
+        console.error("Server Error:", error);
+        return response.status(500).json({ message: "Server Error", error });
     }
 });
 

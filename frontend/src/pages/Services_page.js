@@ -13,10 +13,8 @@ function ServicesPage() {
   const [image, setImage] = useState(null);
   const [activeCategory, setActiveCategory] = useState('foods');
   const apiUrl = process.env.REACT_APP_API_URL;
-  const [opening, setOpening] = useState(null);
-  const [closing, setClosing] = useState(null);
-  const [timeSlots, setTimeSlots] = useState([]);
   const [prodErr, setProdErr] = useState({});
+  const [timeSlots, setTimeSlots] = useState([]);
 
   const filteredProducts = products.filter(
     (product) => product.prod_category === activeCategory
@@ -63,48 +61,6 @@ function ServicesPage() {
     const formattedTime = new Date(0, 0, 0, hours, minutes);
     return formattedTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
   };
-
-  const generateTimeSlot = async (opening, closing, vetId) => {
-    if (!opening || !closing) {
-      console.error('Invalid opening or closing time:', opening, closing);
-      return;
-    }
-  
-    const slots = [];
-    const [openingHours, openingMinutes] = opening.split(':').map(Number);
-    const [closingHours, closingMinutes] = closing.split(':').map(Number);
-  
-    const currentTime = new Date();
-    currentTime.setHours(openingHours, openingMinutes, 0, 0);
-  
-    const endTime = new Date();
-    endTime.setHours(closingHours, closingMinutes, 0, 0);
-  
-    let approvedSlots = [];
-    try {
-      const response = await axios.get(`${apiUrl}/api/approvedAppointments/${selectedVet._id}`);
-      if (response.status === 200) {
-        approvedSlots = response.data;
-      }
-    } catch (error) {
-      console.error('Error fetching approved appointments', error);
-    }
-  
-    while (currentTime < endTime) {
-      const nextTime = new Date(currentTime);
-      nextTime.setHours(currentTime.getHours() + 1);
-  
-      const formattedStart = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-      const formattedEnd = nextTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-  
-      const slot = `${formattedStart} - ${formattedEnd}`;
-      slots.push({ time: slot, taken: approvedSlots.includes(slot) });
-  
-      currentTime.setHours(currentTime.getHours() + 1);
-    }
-  
-    setTimeSlots(slots);
-  };
   
   useEffect(() => {
     const viewProfile = async () => {
@@ -114,10 +70,6 @@ function ServicesPage() {
         if (response.status === 200) {
           if (response.data && response.data.profile_pic_url) {
             setImage(response.data.profile_pic_url);
-            setOpening(response.data.opening);
-            setClosing(response.data.closing);
-  
-            await generateTimeSlot(response.data.opening, response.data.closing, selectedVet._id);
           }
         }
       } catch (error) {
@@ -148,12 +100,21 @@ function ServicesPage() {
     getProducts();
   }, [selectedVet]);
 
-  useEffect(() => {
-    if (opening && closing) {
-      generateTimeSlot(opening, closing);
-    }
-  }, [opening, closing]);
+    useEffect(() => {
+      const getClinicSchedule = async () => {
+          if (!selectedVet) return;
+          try {
+              const response = await axios.get(`${apiUrl}/api/clinicSched/${selectedVet._id}`);
+              if (response.status === 200) {
+                  setTimeSlots(response.data);
+              }
+          } catch (error) {
+              console.error("Error fetching schedule:", error);
+          }
+      };
 
+      getClinicSchedule();
+  }, [selectedVet]);
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center p-6">
@@ -213,26 +174,30 @@ function ServicesPage() {
         <div className="flex space-x-4">
           <input
             type="date"
-            className={`w-1/2 border p-3 ${errorService.date ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
+            className={`w-1/2 border p-3 ${errorService.date || errorService.conflict ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
             onChange={(e) => setDate(e.target.value)}
           />
  
-        <select
-          onChange={(e) => setTime(e.target.value)}
-          className={`border p-3 flex-1 ${errorService.time ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
-        >
-          <option hidden>Please select a time</option>
-          {timeSlots.length > 0 ? (
-            timeSlots.map((slot, index) => (
-              <option key={index} value={slot.time} disabled={slot.taken}>
-                {slot.taken ? `❌ ${slot.time} (Taken)` : slot.time}
-              </option>
-            ))
-          ) : (
-            <option>No available slots</option>
-          )}
-        </select>
-
+          <select
+              onChange={(e) => setTime(e.target.value)}
+              className={`border p-3 flex-1 ${errorService.time || errorService.conflict ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
+          >
+              <option hidden>Please select a time</option>
+              {timeSlots.length > 0 ? (
+                  timeSlots.map((slot, index) => (
+                      <option
+                          key={index}
+                          value={slot.timeSlot}
+                          disabled={slot.isTaken}
+                          className={slot.isTaken ? 'text-red-600 font-bold' : ''}
+                      >
+                          {slot.isTaken ? `${slot.timeSlot} (!)` : slot.timeSlot}
+                      </option>
+                  ))
+              ) : (
+                  <option disabled>No available slots</option>
+              )}
+          </select>
 
         </div>
         <select
@@ -255,7 +220,8 @@ function ServicesPage() {
             errorService.contact ||
             errorService.date ||
             errorService.time ||
-            errorService.reason}
+            errorService.reason||
+            errorService.conflict}
         </span>
         <button
           type="submit"
