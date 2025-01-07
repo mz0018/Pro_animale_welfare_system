@@ -17,7 +17,7 @@ function App() {
 
   return (
     <AuthProvider>
-      {!isOnline && <p style={{ color: "red", textAlign: "center" }}>No internet connection</p>}
+      {!isOnline && <p className="bg-red-500 text-white p-2">No internet connection</p>}
       <Router>
         <AuthContext.Consumer>
           {({ user, admin }) => (

@@ -5,7 +5,7 @@ import useSigninAdmin from "../useHooks/useSigninAdmin";
 const AdminPage = () => {
     const [isSignUp, setIsSignUp] = useState(false);
     const { setAdmin_name, setAdmin_username, setAdmin_password, setContact, setLicense_certificate, signupAdmin, signupError } = useSignupAdmin();
-    const { checkAdmin_username, checkAdmin_password, signinAdmin, signinError } = useSigninAdmin();
+    const { checkAdmin_username, checkAdmin_password, signinAdmin, signinError, loading } = useSigninAdmin();
 
     const handleSignUpClick = () => {
         setIsSignUp(true);
@@ -91,9 +91,17 @@ const AdminPage = () => {
                             <span className="text-sm text-red-600">{signinError.invalid || signinError.empty_fields}</span>
                             <button
                                 type="submit"
-                                className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition transform hover:scale-105"
+                                className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition transform hover:scale-105 flex items-center justify-center"
+                                disabled={loading}
                             >
-                                Signin
+                                {loading ? (
+                                    <div className="flex items-center space-x-2">
+                                        <div className="animate-spin border-4 border-t-transparent border-white rounded-full h-6 w-6"></div>
+                                        <span>Loading...</span>
+                                    </div>
+                                ) : (
+                                    "Signin"
+                                )}
                             </button>
                         </form>
                         <div className="mt-4 text-center">

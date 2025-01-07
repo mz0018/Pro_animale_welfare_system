@@ -9,6 +9,7 @@ function $Auth() {
     const [tryEmail, setTryEmail] = useState("");
     const [tryPassword, setTryPassword] = useState("");
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const apiUrl = process.env.REACT_APP_API_URL;
 
     const { login } = useContext(AuthContext);
@@ -27,7 +28,7 @@ function $Auth() {
 
     const HandleTry = async (e) => {
         e.preventDefault();
-        
+        setLoading(true);
         try {
           const res = await axios.post(`${apiUrl}/api/try`, { tryEmail, tryPassword });
           const data = res.data;
@@ -38,13 +39,15 @@ function $Auth() {
         } catch (error) {
           console.error("Error: ", error);
           throw(error);
+        } finally {
+          setLoading(false);
         }
     }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-8">
   
-  <form onSubmit={HandleInsert} className="bg-white shadow-md rounded-lg p-6 w-full max-w-md mb-6">
+  <form onSubmit={HandleInsert} className="bg-white shadow-md rounded-lg p-6 w-full max-w-md mb-6" style={{ display: "none" }}>
     <h1 className="text-2xl font-bold text-gray-700 mb-4">Insert</h1>
         <input 
         type="password" 
@@ -68,9 +71,7 @@ function $Auth() {
         </button>
     </form>
 
-    <form onSubmit={HandleTry} className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-700 mb-4">Try</h1>
-        
+    <form onSubmit={HandleTry} className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">        
         <input 
         type="password" 
         placeholder="Enter Email" 
@@ -87,10 +88,19 @@ function $Auth() {
         
         <button 
         type="submit" 
-        className="w-full bg-green-500 text-white font-semibold py-2 rounded hover:bg-green-600 transition duration-300"
-        >
-        Proceed
-        </button>
+        className="w-full bg-green-500 text-white font-semibold py-2 rounded hover:bg-green-600 transition duration-300 flex justify-center items-center"
+        disabled={loading}
+      >
+        {loading ? (
+          <div className="flex items-center space-x-2">
+            <div className="animate-spin border-4 border-t-transparent border-white rounded-full h-6 w-6"></div>
+            <span>Loading...</span>
+          </div>
+        ) : (
+          "Proceed"
+        )}
+      </button>
+
     </form>
 
     </div>
