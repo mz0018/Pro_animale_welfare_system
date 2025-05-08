@@ -23,7 +23,7 @@ const app = express();
 
 app.use(cors({
     origin: (origin, callback) => {
-        const allowedOrigins = ['http://localhost:3000', 'http://192.168.137.1:3000'];
+        const allowedOrigins = ['https://proanimalwelfare.shop','https://api.proanimalwelfare.shop'];
         if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
             callback(null, true);
         } else {
