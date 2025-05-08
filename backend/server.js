@@ -65,7 +65,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const start_server = async () => {
-    const PORT = process.env.PORT || 3001;
+    const PORT = process.env.PORT || 4000;
 
     try {
         await connect_to_mongo();
