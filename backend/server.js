@@ -23,11 +23,12 @@ const app = express();
 
 app.use(cors({
     origin: (origin, callback) => {
+        console.log('Request Origin:', origin); // Add this for debugging
         const allowedOrigins = ['https://proanimalwelfare.shop','https://api.proanimalwelfare.shop'];
-        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
-            callback(new Error('Not allowed by CORS'));
+            callback(new Error(`CORS error: Origin ${origin} not allowed`));
         }
     },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
