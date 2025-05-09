@@ -58,7 +58,7 @@ function ProfilePicture({ id }) {
     formData.append("picture", profile_pic);
 
     try {
-      const response = await axios.post(``${apiUrl}/api/profilePicture/${id}`, formData, {
+      const response = await axios.post(`${apiUrl}/api/profilePicture/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
