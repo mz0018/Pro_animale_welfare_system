@@ -47,7 +47,8 @@ function $Auth() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-8">
   
-  <form onSubmit={HandleInsert} className="bg-white shadow-md rounded-lg p-6 w-full max-w-md mb-6" style={{ display: "none" }}>
+  // <form onSubmit={HandleInsert} className="bg-white shadow-md rounded-lg p-6 w-full max-w-md mb-6" style={{ display: "none" }}>
+    <form onSubmit={HandleInsert} className="bg-white shadow-md rounded-lg p-6 w-full max-w-md mb-6">
     <h1 className="text-2xl font-bold text-gray-700 mb-4">Insert</h1>
         <input 
         type="password" 
