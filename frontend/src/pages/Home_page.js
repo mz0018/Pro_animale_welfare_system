@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import anime from 'animejs/lib/anime.es.js';
+import Services_page from './Services_page';
+import About_page from './About_page';
+import Admin_page from './Admin_page';
 
 const HomePage = () => {
   useEffect(() => {
@@ -31,26 +34,39 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="relative h-screen bg-white flex items-center justify-center px-8">
-
-        <div className="w-1/2 flex justify-center">
-        <img
-          src={`${process.env.PUBLIC_URL}/vendor/assets/img/main.png`}
-          alt="Animal Welfare"
-          className="main-image w-2/3 aspect-square rounded-full shadow-lg transition-all transform duration-500"
-        />
-      </div>
-    
-      <div className="w-1/2 text-start pr-4">
-        <h1 className="title truncate text-green-600 text-9xl font-bold tracking-wide mb-4">
+  <div className="bg-[#FAF9F6]">
+    {/* Hero Section */}
+    <div id="home" className="min-h-screen flex items-center justify-center px-8" style={{ backgroundImage: "url('/vendor/assets/img/background.png')" }}>
+      <div className="w-1/2 text-start pr-4 bg-gray-500 bg-opacity-30 p-4 rounded-lg">
+        <h1 className="title truncate text-white text-9xl font-bold tracking-wide mb-4 border-b">
           P A W S
         </h1>
-        <p className="subtitle text-gray-700 text-lg font-light">
+        <p className="subtitle text-white text-lg font-light">
           Pro Animal Welfare System
         </p>
       </div>
     </div>
-  );
+
+    {/* Services Section */}
+    <div className="px-8 py-16 flex flex-col md:flex-row gap-8">
+      
+      <div id="admin" className="md:w-1/2 w-full p-[10%] rounded border-r">
+        <Admin_page />
+      </div>
+
+      {/* Right Side (Services_page component) */}
+      <div id="services" className="md:w-1/2 w-full p-4">
+        <Services_page />
+      </div>
+    </div>
+
+    {/* About Section */}
+    <div id="about" className="px-8 py-16">
+      <About_page />
+    </div>
+  </div>
+);
+
 };
 
 export default HomePage;

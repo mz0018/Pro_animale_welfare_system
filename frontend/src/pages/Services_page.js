@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useAppointmentServices from '../useHooks/useAppointmentServices';
 import useGetVetAsOptions from '../useHooks/useGetVetAsOptions';
 import axios from 'axios';
-import { FaTimes, FaInfoCircle, FaMapMarkerAlt, FaUser, FaClock } from 'react-icons/fa';
+import { FaTimes, FaInfoCircle, FaMapMarkerAlt, FaUser, FaClock, FaBriefcase } from 'react-icons/fa';
 import { MdCategory } from 'react-icons/md';
 
 function ServicesPage() {
@@ -117,16 +117,19 @@ function ServicesPage() {
   }, [selectedVet]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center p-6">
+    <div className="min-h-screen bg-white flex flex-col items-center p-6 rounded-md">
       <div className="w-full max-w-2xl">
-        <h1 className="text-5xl font-bold text-green-600 text-left mb-2">Our Services</h1>
-        <p className="text-lg text-gray-600 text-left mb-6">
+        <h1 className="text-5xl font-bold border-b text-green-600 p-5 flex items-center gap-3">
+          <FaBriefcase />
+          Services
+        </h1>
+        <p className="text-lg text-gray-600 text-left my-2">
           Book an appointment with our professional veterinarians. We care about your pets as much as you do!
         </p>
       </div>
       <form
         onSubmit={sendAppointment}
-        className="bg-white w-full max-w-2xl p-8 rounded-xl shadow-lg border border-gray-200 flex flex-col space-y-6"
+        className="bg-[#FAF9F6] w-full max-w-2xl p-8 rounded-xl shadow-lg border border-gray-200 flex flex-col space-y-6"
       >
         <h2 className="text-2xl font-semibold text-green-600 mb-4 text-center">
           Book an Appointment
@@ -135,7 +138,7 @@ function ServicesPage() {
           <h3 className="text-lg font-semibold mb-2">Select Veterinarian:</h3>
           <div className="flex space-x-4 items-center">
             <select
-              className={`border p-3 flex-1 ${errorService.selectedVetId ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
+              className={`border p-3 flex-1 ${errorService.selectedVetId ? 'border-red-600' : 'border-green-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
               onChange={(e) => handleSelectChange(e.target.value)}
             >
               <option value="">Select Veterinarian</option>
@@ -162,25 +165,25 @@ function ServicesPage() {
         <input
           type="text"
           placeholder="Full Name"
-          className={`border p-3 ${errorService.name ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
+          className={`border p-3 ${errorService.name ? 'border-red-600' : 'border-green-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
           onChange={(e) => setName(e.target.value)}
         />
         <input
           type="text"
           placeholder="Contact Number"
-          className={`border p-3 ${errorService.contact ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
+          className={`border p-3 ${errorService.contact ? 'border-red-600' : 'border-green-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
           onChange={(e) => setContact(e.target.value)}
         />
         <div className="flex space-x-4">
           <input
             type="date"
-            className={`w-1/2 border p-3 ${errorService.date || errorService.conflict ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
+            className={`w-1/2 border p-3 ${errorService.date || errorService.conflict ? 'border-red-600' : 'border-green-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
             onChange={(e) => setDate(e.target.value)}
           />
  
           <select
               onChange={(e) => setTime(e.target.value)}
-              className={`border p-3 flex-1 ${errorService.time || errorService.conflict ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
+              className={`border p-3 flex-1 ${errorService.time || errorService.conflict ? 'border-red-600' : 'border-green-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
           >
               <option hidden>Please select a time</option>
               {timeSlots.length > 0 ? (
@@ -201,7 +204,7 @@ function ServicesPage() {
 
         </div>
         <select
-          className={`border p-3 ${errorService.reason ? 'border-red-600' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
+          className={`border p-3 ${errorService.reason ? 'border-red-600' : 'border-green-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-green-500`}
           onChange={(e) => setReason(e.target.value)}
         >
           <option value="">Select a reason</option>

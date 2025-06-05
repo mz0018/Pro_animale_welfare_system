@@ -10,45 +10,41 @@ function NavbarComponent() {
   };
 
   return (
-    <nav className="bg-white p-4">
+    <nav className="bg-[#FAF9F6] p-4 sticky z-50 top-0 shadow-lg">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-green-600 cursor-pointer">
-          <img
-            src={`${process.env.PUBLIC_URL}/vendor/assets/img/logo.png`}
-            alt="logo"
-            className="w-24 h-24 rounded-full transition-all transform duration-500"
-          />
+        <h1 className="text-9xl font-bold text-green-600 cursor-pointer">
+          P <span>Λ</span>W S
         </h1>
 
         <div className="hidden lg:flex justify-center items-center space-x-8">
-          <Link
-            to="/"
-            className="flex items-center font-bold text-green-600 hover:text-green-500"
+          <a
+            href="#home"
+            className="flex text-xs p-5 rounded-md items-center font-bold text-green-600 hover:bg-gray-100 bg-opacity-30"
           >
             <FaHome className="text-3xl mr-2 font-bold" />
-            <span>Home</span>
-          </Link>
-          <Link
-            to="/services"
-            className="flex items-center font-bold text-green-600 hover:text-green-500"
+            <span>HOME</span>
+          </a>
+          <a
+            href="#services"
+            className="flex text-xs p-5 rounded-md items-center font-bold text-green-600 hover:bg-gray-100 bg-opacity-30"
           >
             <FaBriefcase className="text-3xl mr-2 font-bold" />
-            <span>Services</span>
-          </Link>
-          <Link
-            to="/about"
-            className="flex items-center font-bold text-green-600 hover:text-green-500"
+            <span>SERVICES</span>
+          </a>
+          <a
+            href="#about"
+            className="flex text-xs p-5 rounded-md items-center font-bold text-green-600 hover:bg-gray-100 bg-opacity-30"
           >
             <FaInfoCircle className="text-3xl mr-2 font-bold" />
-            <span>About</span>
-          </Link>
-          <Link
-            to="/admin"
-            className="flex items-center font-bold text-green-600 hover:text-green-500"
+            <span>ABOUT</span>
+          </a>
+          <a
+            href="#admin"
+            className="flex text-xs p-5 rounded-md items-center font-bold text-green-600 hover:bg-gray-100 bg-opacity-30"
           >
             <FaSignInAlt className="text-3xl mr-2 font-bold" />
-            <span>Sign In</span>
-          </Link>
+            <span>SIGN IN</span>
+          </a>
         </div>
 
         <button
@@ -62,34 +58,34 @@ function NavbarComponent() {
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white shadow-md">
           <div className="flex flex-col space-y-4 p-4">
-            <Link
-              to="/"
+            <a
+              href="#home"
               className="font-bold text-green-600 hover:text-green-500"
               onClick={toggleMobileMenu}
             >
               Home
-            </Link>
-            <Link
-              to="/services"
+            </a>
+            <a
+              href="#services"
               className="font-bold text-green-600 hover:text-green-500"
               onClick={toggleMobileMenu}
             >
               Services
-            </Link>
-            <Link
-              to="/about"
+            </a>
+            <a
+              href="#about"
               className="font-bold text-green-600 hover:text-green-500"
               onClick={toggleMobileMenu}
             >
               About
-            </Link>
-            <Link
-              to="/admin"
+            </a>
+            <a
+              href="#admin"
               className="font-bold text-green-600 hover:text-green-500"
               onClick={toggleMobileMenu}
             >
               Sign In
-            </Link>
+            </a>
           </div>
         </div>
       )}
