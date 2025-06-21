@@ -142,10 +142,11 @@ function ServicesPage() {
               onChange={(e) => handleSelectChange(e.target.value)}
             >
               <option value="">Select Veterinarian</option>
-              {options.map((option) => (
-                <option key={option._id} value={option._id}>
-                  {option.admin_name}
-                </option>
+              {Array.isArray(options) &&
+                options.map((option) => (
+                  <option key={option._id} value={option._id}>
+                    {option.admin_name}
+                  </option>
               ))}
             </select>
             <button

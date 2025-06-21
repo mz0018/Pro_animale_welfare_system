@@ -36,7 +36,12 @@ const HomePage = () => {
   return (
   <div className="bg-[#FAF9F6]">
     {/* Hero Section */}
-    <div id="home" className="min-h-screen flex items-center justify-center px-8" style={{ backgroundImage: "url('/vendor/assets/img/background.png')" }}>
+    <div id="home" className="h-96 flex items-center justify-center px-8" style={{ 
+      backgroundImage: "url('/vendor/assets/img/background.png')",
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center'
+      }}>
       <div className="w-1/2 text-start pr-4 bg-gray-500 bg-opacity-30 p-4 rounded-lg">
         <h1 className="title truncate text-white text-9xl font-bold tracking-wide mb-4 border-b">
           P A W S
