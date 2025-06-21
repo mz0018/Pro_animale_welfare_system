@@ -27,6 +27,7 @@ function App() {
                     <HomePage />
                   </>
                 } />
+                <Route path="/home" element={<HomePage />} />
                 <Route path="/about" element={<About_page />} />
                 <Route path="/dashboard" element={<AdminDashboard />} />
                 <Route path="/$/auth" element={<$Auth />} />
