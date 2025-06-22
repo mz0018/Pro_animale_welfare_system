@@ -15,7 +15,12 @@ function App() {
 
   return (
     <AuthProvider>
-      {!isOnline && <p className="bg-red-500 text-white p-2">No internet connection</p>}
+      {!isOnline && (
+        <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-40 backdrop-blur-md text-white flex flex-col items-center justify-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-white border-opacity-70"></div>
+          <p className="text-2xl font-bold">No internet connection</p>
+        </div>
+      )}
       <Router>
         <AuthContext.Consumer>
           {({ user }) => (
