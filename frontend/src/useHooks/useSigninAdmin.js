@@ -13,7 +13,7 @@ const useSigninAdmin = () => {
     const [loading, setLoading] = useState(false);
     const apiUrl = process.env.REACT_APP_API_URL;
 
-    console.log(`This is your API you dumbass: ${apiUrl}`)
+    console.log(`This is your API you dumbass rebuild: ${apiUrl}`)
 
     const signinAdmin = async (e) => {
         e.preventDefault();
