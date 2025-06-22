@@ -117,7 +117,7 @@ function ServicesPage() {
   }, [selectedVet]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center p-6 rounded-md">
+    <div className="bg-white flex flex-col items-center p-6 rounded-md">
       <div className="w-full max-w-2xl">
         <h1 className="text-5xl font-bold border-b text-green-600 p-5 flex items-center gap-3">
           <FaBriefcase />
@@ -236,11 +236,10 @@ function ServicesPage() {
       </form>
 
       {isModalOpen && vetDetails && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-gray-100 rounded-lg p-8 sm:p-12 lg:p-16 w-[90%] sm:w-[80%] max-w-none shadow-2xl transition-transform transform scale-100">
-
-            <div className="flex flex-col lg:flex-row lg:space-x-10 mt-6">
-              <div className="flex flex-col items-center lg:items-start lg:w-1/3 space-y-6">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center overflow-y-auto">
+          <div className="bg-gray-100 rounded-lg p-6 sm:p-10 lg:p-16 w-[95%] sm:w-[85%] max-w-6xl shadow-2xl my-8 max-h-[90vh] overflow-y-auto">
+            <div className="flex flex-col lg:flex-row gap-10 mt-6">
+              <div className="flex flex-col items-center lg:items-start lg:w-1/3 space-y-6 text-center lg:text-left">
                 <div className="relative">
                   <img
                     src={image || `${process.env.PUBLIC_URL}/vendor/assets/img/default_img.jpg`}

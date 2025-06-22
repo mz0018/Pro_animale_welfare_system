@@ -53,19 +53,16 @@ const HomePage = () => {
     </div>
 
     {/* Services Section */}
-    <div className="px-8 py-16 flex flex-col md:flex-row gap-8">
-      
-      <div id="admin" className="md:w-1/2 w-full p-[10%] rounded border-r">
+    <div className="px-8 py-16 flex flex-col md:flex-col lg:flex-row gap-8">
+      <div id="admin" className="w-full lg:w-1/2 p-[10%] rounded border lg:border-r border-b lg:border-b-0">
         <Admin_page />
       </div>
 
-      {/* Right Side (Services_page component) */}
-      <div id="services" className="md:w-1/2 w-full p-4">
+      <div id="services" className="w-full lg:w-1/2 p-4">
         <Services_page />
       </div>
     </div>
 
-    {/* About Section */}
     <div id="about" className="px-8 py-16">
       <About_page />
     </div>

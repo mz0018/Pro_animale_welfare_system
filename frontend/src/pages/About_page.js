@@ -2,7 +2,7 @@ import { FaInfoCircle } from 'react-icons/fa';
 
 function AboutPage() {
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+    <div className="bg-white flex flex-col items-center justify-center">
       <div className="w-full max-w-4xl h-1/2 p-6 overflow-y-auto">
         <h1 className="text-5xl font-bold border-b text-green-600 p-5 flex items-center gap-3">
         <FaInfoCircle />

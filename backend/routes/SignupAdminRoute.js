@@ -71,7 +71,7 @@ router.post('/signupAdmin', async (request, response) => {
         });
 
         await credentials.save();
-        response.status(200).json({ message: 'Request sucesfully sent for approval' });
+        response.status(200).json({ message: 'Request sucessfully sent for approval' });
     } catch (error) {
         console.error("Error occured signup admin: ", error);
         response.status(500).json({ message: 'Server error' });

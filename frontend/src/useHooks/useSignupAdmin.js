@@ -23,8 +23,8 @@ const useSignupAdmin = () => {
                 setAdmin_password("");
                 setSignupError({});
                 Swal.fire({
-                    title: 'Upload Complete',
-                    text: 'Registered successfully.',
+                    title: 'Waiting for approval',
+                    text: 'Request sucessfully sent for approval.',
                     icon: 'success',
                     confirmButtonText: 'OK',
                     timer: 2000,
